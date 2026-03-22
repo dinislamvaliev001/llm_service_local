@@ -1,6 +1,6 @@
 # src/application/workflows/state.py
 import operator
-from typing import Annotated
+from typing import Annotated, List, Optional, TypedDict
 from typing_extensions import TypedDict
 from langgraph.graph.message import add_messages
 from langchain_core.messages import BaseMessage
@@ -8,6 +8,9 @@ from langchain_core.messages import BaseMessage
 class ChatState(TypedDict):
     # ── Входные данные ──
     user_query: str
+    # retrieved_documents: List[dict]  # Общий список для гибрида
+    # sql_documents: List[dict]        # Только SQL результаты
+    # vector_documents: List[dict]     # Только векторные
     chat_id: int | None
 
     # ── История сообщений ──

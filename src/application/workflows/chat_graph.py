@@ -22,13 +22,6 @@ from src.application.agents.writer_agent import blocked_node, writer_node
 import logging
 logger = logging.getLogger(__name__)
 
-# def route_after_sql(state: ChatState) -> str:
-#     """Фоллбэк на RAG если SQL вернул пустой результат."""
-#     results = state.get("retrieved_documents") or []
-#     if results:
-#         return "writer"
-#     return "rag_agent"
-
 def route_after_sql(state: ChatState) -> str:
     """Фоллбэк на RAG если SQL вернул пустой результат."""
     results = state.get("retrieved_documents") or []
@@ -45,7 +38,6 @@ def build_chat_graph():
     graph.add_node("blocked", blocked_node)
     graph.add_node("intent_router", intent_router_node)
     graph.add_node("rag_agent", rag_agent_node)
-    # graph.add_node("tools", rag_tool_node)
     graph.add_node("collect_docs", collect_retrieved_documents)
     graph.add_node("sql_agent", sql_agent_node)
     graph.add_node("writer", writer_node)
@@ -69,7 +61,6 @@ def build_chat_graph():
         {
             "rag": "rag_agent",
             "sql": "sql_agent",
-            # "sql": "rag_agent",
         },
     )
 

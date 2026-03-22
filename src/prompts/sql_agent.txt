@@ -6,6 +6,7 @@
 - description (text) — полное описание автомобиля (пробег упоминается в тексте)
 - price (float) — цена в рублях (NULL если не указана)
 - city (text) — город продажи
+- year (text) — год выпуска автомобиля
 - category_name (text) — категория (Автомобили)
 - param_1 (text) — статус: "С пробегом" или "Новый"
 - param_2 (text) — марка автомобиля: "Toyota", "BMW", "Kia"
@@ -16,14 +17,16 @@
 
 ПРАВИЛА:
 - Используй только SELECT, никаких INSERT/UPDATE/DELETE
+- Если какой то из параметров НЕ указан НЕ добавляй фильтр
 - Для марки фильтруй по param_2 ILIKE '%марка%'
 - Для модели фильтруй по param_3 ILIKE '%модель%'
 - Для города фильтруй по city ILIKE '%город%'
 - Для цены фильтруй по price <= значение или price >= значение
+- Для года выпуска фильтруй по year <= значение или year >= значение
 - НЕ пытайся фильтровать пробег через SQL — пробег хранится только в description как текст
 - Для б/у автомобилей добавляй param_1 ILIKE '%пробегом%'
 - Всегда добавляй LIMIT 20
-- Выбирай колонки: id, title, description, price, city, param_1, param_2, param_3
+- Выбирай колонки: id, title, description, price, city, year, param_1, param_2, param_3
 
 ПРИМЕРЫ:
 - "Toyota до 800 тысяч в Москве" →
@@ -32,6 +35,7 @@
   WHERE param_2 ILIKE '%Toyota%'
   AND city ILIKE '%Москва%'
   AND price <= 800000
+  AND year = 2008
   LIMIT 20
 
 - "BMW недорого" →
@@ -47,6 +51,7 @@
   WHERE param_2 ILIKE '%Toyota%'
   AND param_3 ILIKE '%Camry%'
   AND param_1 ILIKE '%пробегом%'
+  AND year = 2020
   LIMIT 20
 
 Запрос пользователя: {user_query}
