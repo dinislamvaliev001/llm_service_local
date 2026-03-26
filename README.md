@@ -57,9 +57,13 @@ User → POST /api/v1/chat
          ↓
     [moderation_agent]  — релевантен ли запрос?
          ↓ да
-    [rag_agent]  — векторный поиск + SQL поиск
+    [query_agent]       - переписывает запрос для лучшего поиска
+         ↓ да
+    [rag_agent]         — векторный поиск + SQL поиск
+         ↓ да
+    [reranker_agent]    - переранжирует top-K → top-N (N << K)
          ↓
-    [writer_agent]  — формирует ответ на основе найденных объявлений
+    [writer_agent]      — формирует ответ на основе найденных объявлений
          ↓
     Response { chat_id, answer, documents }
 ```
@@ -67,12 +71,12 @@ User → POST /api/v1/chat
 
 | Компонент            | Технология                  |
 |----------------------|-----------------------------|
-| API                  | FastAPI + Uvicorn            |
-| LLM                  | Google Gemini 2.0 flash      |
-| Эмбеддинги           | Google text-embedding-001   |
+| API                  | FastAPI + Uvicorn           |
+| LLM                  | Ollama - mistal             |
+| Эмбеддинги           | Ollama - bge-m3             |
 | Оркестрация агентов  | LangGraph                   |
 | База данных          | PostgreSQL 16 + pgvector    |
-| ORM                  | SQLAlchemy + SQLModel        |
+| ORM                  | SQLAlchemy + SQLModel       |
 | Контейнеризация      | Docker + Docker Compose     |
 | Зависимости          | uv                          |
 
@@ -155,11 +159,11 @@ User → POST /api/v1/chat
 
 ## 🚧 Возможные улучшения
 
-- Гибридный поиск — объединить векторный и SQL поиск
 - Кэширование эмбеддингов — Redis для снижения расходов на API
 - Фильтрация в векторном поиске — pre-filtering по городу/цене
 - Стриминг ответов — StreamingResponse для отображения по мере генерации
 - Авторизация — JWT токены для разграничения чатов по пользователям
 - Метрики качества — оценка релевантности ответов через RAGAS
+- Метрики качества - применение Langfuse
 - Автоматический ingestion — Celery/APScheduler для обновления данных
 """
