@@ -56,7 +56,7 @@ src/
 User → POST /api/v1/chat
          ↓
     [moderation_agent]  — релевантен ли запрос?
-         ↓ да
+         ↓ да           ↓ нет → Response { error: "out of scope" }
     [query_agent]       - переписывает запрос для лучшего поиска
          ↓ да
     [rag_agent]         — векторный поиск + SQL поиск
